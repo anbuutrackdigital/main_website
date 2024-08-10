@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ traffic_crew.first_name }}'s Dashboard</title>
+    <!-- Include any CSS or JS files here -->
+</head>
+<body>
+    <h1>{{ traffic_crew.first_name }} {{ traffic_crew.last_name }}'s Dashboard</h1>
+    <ul>
+        <li><strong>Crew ID:</strong> {{ traffic_crew.crew_id }}</li>
+        <li><strong>First Name:</strong> {{ traffic_crew.first_name }}</li>
+        <li><strong>Last Name:</strong> {{ traffic_crew.last_name }}</li>
+        <li><strong>Phone Number:</strong> {{ traffic_crew.phone_number }}</li>
+        <li><strong>Bike Number:</strong> {{ traffic_crew.bike_number }}</li>
+        <li><strong>Gender:</strong> {{ traffic_crew.gender }}</li>
+    </ul>
+    <a href="{% url 'work_view' %}">Back to Combined View</a>
+</body>
+</html>

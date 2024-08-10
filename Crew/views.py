@@ -5,11 +5,14 @@ from django.contrib.auth.decorators import login_required
 from .models import CallCrew, TrafficCrew
 from .forms import CrewLoginForm, CallCrewRegisterationForm, TrafficCrewRegistrationForm
 
+
 def crew_home(request):
     return render(request, "Crew/crew_home.html")
 
+
 def crew_selection(request):
     return render(request, "Crew/crew_selection.html")
+
 
 def crew_register(request):
     crew_type = request.GET.get("crew_type")
@@ -42,6 +45,7 @@ def crew_register(request):
 
     return render(request, template_name, {"form": form})
 
+
 def crew_login(request):
     if request.method == "POST":
         form = CrewLoginForm(request.POST)
@@ -57,7 +61,9 @@ def crew_login(request):
                 except CallCrew.DoesNotExist:
                     try:
                         traffic_crew = TrafficCrew.objects.get(user=user)
-                        return redirect("traffic_crew_dashboard", crew_id=traffic_crew.crew_id)
+                        return redirect(
+                            "traffic_crew_dashboard", crew_id=traffic_crew.crew_id
+                        )
                     except TrafficCrew.DoesNotExist:
                         return redirect("default_dashboard")
             else:
@@ -66,16 +72,17 @@ def crew_login(request):
         form = CrewLoginForm()
 
     response = render(request, "Crew/crew_login.html", {"form": form})
-    response['Cache-Control'] = 'no-store'
+    response["Cache-Control"] = "no-store"
     return response
+
 
 @login_required
 def call_crew_dashboard(request, crew_id):
     call_crew = get_object_or_404(CallCrew, crew_id=crew_id)
-    context = {
-        "call_crew": call_crew,
-    }
-    return render(request, "Crew/call_crew_dashboard.html", context)
+
+    # Redirect to the Work app's home page for CallCrew members
+    return redirect('work_view')  # Adjust if needed based on your URL patterns
+
 
 @login_required
 def traffic_crew_dashboard(request, crew_id):
@@ -85,9 +92,11 @@ def traffic_crew_dashboard(request, crew_id):
     }
     return render(request, "Crew/traffic_crew_dashboard.html", context)
 
+
 @login_required
 def default_dashboard(request):
     return render(request, "Crew/default_dashboard.html")
+
 
 def crew_logout(request):
     logout(request)

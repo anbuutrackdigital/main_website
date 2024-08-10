@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Combined View</title>
+    <!-- Include any CSS or JS files here -->
+</head>
+<body>
+    <h1>Traffic Crew Members</h1>
+    <p>Welcome, {{ user }}!</p>
+
+    <!-- Logout form -->
+    <form method="post" action="{% url 'logout' %}" style="display:inline;">
+        {% csrf_token %}
+        <button type="submit">Logout</button>
+    </form>
+    <h1>Traffic Crew Members</h1>
+    <ul>
+        {% for item in combined_data %}
+            <li>
+                <a href="{% url 'work_traffic_crew_dashboard' item.crew_id %}">
+                    {{ item.name }} : {{ item.status }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

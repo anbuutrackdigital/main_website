@@ -13,6 +13,10 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 from pathlib import Path
 import os
 
+LOGIN_URL = '/crew/'
+LOGIN_REDIRECT_URL = '/work/'
+LOGOUT_REDIRECT_URL = '/crew/'
+
 # GDAL
 # GDAL_LIBRARY_PATH = os.path.join('C:', 'OSGeo4W64', 'bin', 'gdal309.dll')
 GDAL_LIBRARY_PATH = r'C:\OSGeo4W\bin\gdal309.dll'
@@ -45,6 +49,7 @@ INSTALLED_APPS = [
     # Created apps
     'Crew.apps.CrewConfig',
     'Ambulance.apps.AmbulanceConfig',
+    'Work.apps.WorkConfig'
 ]
 
 MIDDLEWARE = [
