@@ -5,6 +5,11 @@ from django.contrib.auth import logout
 from Crew.models import CallCrew
 from Crew.models import TrafficCrew
 from Crew.models import TrafficCrewAvailable
+from .models import CallDetails
+
+from .forms import CallDetailsForm
+
+from .utils import get_location_coordinates
 
 # from Ambulance.models import AmbulanceDetail
 # from Ambulance.models import AmbulanceLocation
@@ -15,39 +20,90 @@ from Crew.models import TrafficCrewAvailable
 def work_view(request):
     user = request.user
 
-    # Check if the user is a CallCrew member
     if CallCrew.objects.filter(user=user).exists():
-        # Render the Work app's home page with data for CallCrew members
-        traffic_crews = TrafficCrew.objects.all()
-        traffic_crew_statuses = TrafficCrewAvailable.objects.all()
+        if request.method == 'POST':
+            form = CallDetailsForm(request.POST)
 
-        # Create a dictionary for quick lookup of statuses
-        status_dict = {status.traffic_crew.crew_id: status.status for status in traffic_crew_statuses}
+            if form.is_valid():
+                call_details = form.save(commit=False)
+                call_details.user = user
+                call_details.save()
 
-        combined_data = []
-        for traffic_crew in traffic_crews:
-            status = status_dict.get(traffic_crew.crew_id, 'unknown')
-            combined_data.append({
-                'crew_id': traffic_crew.crew_id,
-                'name': traffic_crew.first_name,
-                'status': status
+                # Process assigned crew
+                selected_crew = form.cleaned_data['assigned_crew']
+                call_details.assigned_crew.set(selected_crew)
+                call_details.save()
+
+                return redirect('work_view')
+        else:
+            form = CallDetailsForm()
+
+        # Prepare data for the template
+        vacant_crew = TrafficCrewAvailable.objects.filter(status='vacant')
+        vacant_crew_list = []
+        for crew in vacant_crew:
+            location_coords = get_location_coordinates(crew.location)
+            vacant_crew_list.append({
+                'crew': crew.traffic_crew,
+                'location': location_coords
             })
 
+        # Fetch call history for the specific user
+        call_history = CallDetails.objects.filter(user=user).order_by('-created_at')
+
         context = {
-            'combined_data': combined_data,
+            'form': form,
+            'vacant_crew_list': vacant_crew_list,
             'user': user,
+            'call_history': call_history
         }
         return render(request, 'Work/home.html', context)
 
-    # Check if the user is a TrafficCrew member
     elif TrafficCrew.objects.filter(user=user).exists():
-        # Redirect to the TrafficCrew dashboard
         traffic_crew = TrafficCrew.objects.get(user=user)
         return redirect('work_traffic_crew_dashboard', crew_id=traffic_crew.crew_id)
-    
-    # If user type is unknown or not found, handle accordingly
-    return redirect('login')  # Adjust based on your login URL or redirect as needed
-    
+
+    return redirect('login')
+
+
+@login_required
+def call_details_view(request):
+    if request.method == "POST":
+        caller_name = request.POST.get("caller_name")
+        caller_phonenumber = request.POST.get("caller_phonenumber")
+        patients_number = request.POST.get("patients_number")
+        patients_condition = request.POST.get("patients_condition")
+        available_for_ambulance = request.POST.get("available_for_ambulance") == "yes"
+        patient_location = request.POST.get("patient_location")
+
+        CallDetails.objects.create(
+            caller_name=caller_name,
+            caller_phonenumber=caller_phonenumber,
+            patients_number=patients_number,
+            patients_condition=patients_condition,
+            available_for_ambulance=available_for_ambulance,
+            patient_location=patient_location,
+            user=request.user,
+        )
+
+        return redirect("work_view")  # Redirect to the work view after submission
+
+    return redirect("work_view")
+
+
+@login_required
+def assign_crew_to_call(request, call_id):
+    call = get_object_or_404(CallDetails, id=call_id)
+
+    if request.method == "POST":
+        crew_id = request.POST.get("crew_id")
+        crew = get_object_or_404(TrafficCrew, crew_id=crew_id)
+        if call.assigned_crew is None:  # Only assign if no crew is assigned
+            call.assigned_crew = crew
+            call.save()
+
+    return redirect("work_view")  # Redirect back to the work view
+
 
 @login_required
 def work_traffic_crew_dashboard(request, crew_id):
@@ -56,7 +112,7 @@ def work_traffic_crew_dashboard(request, crew_id):
     context = {
         "traffic_crew": traffic_crew,
     }
-    return render(request, "Work/work_traffic_crew_dashboard.html", context)
+    return render(request, "Work/traffic_crew_dashboard.html", context)
 
 
 @login_required

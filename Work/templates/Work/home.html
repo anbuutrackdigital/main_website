@@ -1,27 +1,77 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Combined View</title>
-    <!-- Include any CSS or JS files here -->
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/home.css' %}">
 </head>
-<body>
-    <h1>Traffic Crew Members</h1>
-    <p>Welcome, {{ user }}!</p>
 
-    <!-- Logout form -->
-    <form method="post" action="{% url 'logout' %}" style="display:inline;">
-        {% csrf_token %}
-        <button type="submit">Logout</button>
-    </form>
-    <h1>Traffic Crew Members</h1>
-    <ul>
-        {% for item in combined_data %}
-            <li>
-                <a href="{% url 'work_traffic_crew_dashboard' item.crew_id %}">
-                    {{ item.name }} : {{ item.status }}
-                </a>
-            </li>
-        {% endfor %}
-    </ul>
+<body>
+    <div class="container">
+        <h1>Traffic Crew Members</h1>
+        <p>Welcome, {{ user }} User ID: {{ user.id }}</p>
+
+        <!-- Logout form -->
+        <form method="post" action="{% url 'logout' %}" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit">Logout</button>
+        </form>
+
+        <!-- Call Details Form -->
+        <h2>Enter Call Details</h2>
+        <form method="post" action="{% url 'work_view' %}">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Submit</button>
+        </form>
+
+        <!-- Vacant Crew Members -->
+        <h2>Vacant Crew Members</h2>
+        <div class="vacant-crew">
+            <ul>
+                {% for crew in vacant_crew_list %}
+                <li>
+                    {{ crew.crew.first_name }} ({{ crew.crew.crew_id }}) -
+                    <span class="location">Location: {{ crew.location.0 }}, {{ crew.location.1 }}</span>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <!-- Call History -->
+        <h2>Call History</h2>
+        <table class="call-history-table">
+            <thead>
+                <tr>
+                    <th>Caller Name</th>
+                    <th>Patient's Number</th>
+                    <th>Created At</th>
+                    <th>Assigned Crew</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for call in call_history %}
+                <tr>
+                    <td>{{ call.caller_name }}</td>
+                    <td>{{ call.patients_number }}</td>
+                    <td>{{ call.created_at }}</td>
+                    <td>
+                        {% if call.assigned_crew.all %}
+                        <ul>
+                            {% for crew in call.assigned_crew.all %}
+                            <li>{{ crew.first_name }} ({{ crew.crew_id }})</li>
+                            {% endfor %}
+                        </ul>
+                        {% else %}
+                        No crew assigned
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </body>
+
 </html>
