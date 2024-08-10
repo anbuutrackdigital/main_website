@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Select Crew Type</title>
+    <meta name="description" content="Select crew type to register">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: inline-block;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        button:active {
+            background-color: #00408d;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Select Crew Type to Register</h1>
+        <form action="{% url 'register_crew' %}" method="get">
+            <button type="submit" name="crew_type" value="call">Register Call Crew Member</button>
+            <button type="submit" name="crew_type" value="traffic">Register Traffic Crew Member</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('register-form').addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent default form submission
+
+            var form = event.target;
+            var formData = new FormData(form);
+
+            fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRFToken': formData.get('csrfmiddlewaretoken')
+                }
+            }).then(response => {
+                if (response.ok) {
+                    window.location.href = response.url; // Redirect on success
+                } else if (response.status === 403) {
+                    document.getElementById('error-message').innerText = "CSRF verification failed. Please try again.";
+                } else {
+                    document.getElementById('error-message').innerText = "An error occurred. Please try again.";
+                }
+            }).catch(error => {
+                document.getElementById('error-message').innerText = "An error occurred. Please try again.";
+            });
+        });
+    </script>
+</body>
+
+</html>

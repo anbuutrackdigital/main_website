@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ambulance Detail</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        h1 {
+            color: #007bff;
+            margin-bottom: 20px;
+        }
+        p {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 10px;
+            width: 100%;
+            max-width: 600px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        strong {
+            color: #333;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+            font-size: 16px;
+            margin-top: 20px;
+            display: inline-block;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1>Ambulance Details</h1>
+    <p><strong>Ambulance ID: </strong>{{ ambulance.amb_id }}</p>
+    <p><strong>Provided by: </strong>{{ ambulance.amb_hospital }}</p>
+    <p><strong>Ambulance Number:</strong> {{ ambulance.amb_num }}</p>
+    <p><strong>Capacity:</strong> {{ ambulance.amb_cap }}</p>
+    <p><strong>Location:</strong> 
+        Latitude: {{ latitude }}, Longitude: {{ longitude }}
+    </p>
+    <a href="{% url 'ambulance_list' %}">Back to Ambulance List</a>
+</body>
+</html>
