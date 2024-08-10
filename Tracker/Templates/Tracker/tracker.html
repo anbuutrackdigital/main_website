@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AmbuuTrack Tracker</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'Tracker/css/tracker.css' %}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>AmbuuTrack Tracker</h1>
+        </header>
+        
+        <section class="map-container">
+            <div id="map">
+                <!-- Map will be added here later -->
+                <p>Map goes here</p>
+            </div>
+        </section>
+        
+        <section class="details">
+            <div class="ambulance-details">
+                <h2>Ambulance Details</h2>
+                <p><strong>Ambulance Number:</strong> <span id="ambulance-number">A1234</span></p>
+            </div>
+            
+            <div class="crew-details">
+                <h2>Crew Details</h2>
+                <div class="crew-member">
+                    <p><strong>Name:</strong> John Doe</p>
+                    <p><strong>Contact Info:</strong> <a href="tel:+1234567890">+1 234 567 890</a></p>
+                    <p><strong>Bike ID:</strong> B9876</p>
+                </div>
+                <div class="crew-member">
+                    <p><strong>Name:</strong> Jane Smith</p>
+                    <p><strong>Contact Info:</strong> <a href="tel:+0987654321">+0 987 654 321</a></p>
+                    <p><strong>Bike ID:</strong> B5432</p>
+                </div>
+            </div>
+        </section>
+    </div>
+</body>
+</html>

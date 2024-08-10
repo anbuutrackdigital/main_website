@@ -9,6 +9,11 @@
 
 <body>
     <div class="container">
+        <!-- Image at the top right -->
+        <div class="top-right-image">
+            <img src="{% static 'Crew/images/sample_profile.jpg' %}" alt="Profile Image">
+        </div>
+
         <h1>Traffic Crew Members</h1>
         <p>Welcome, {{ user }} User ID: {{ user.id }}</p>
 
@@ -25,6 +30,14 @@
             {{ form.as_p }}
             <button type="submit">Submit</button>
         </form>
+        <a href="{% url 'tracker' %}">Track</a>
+
+        <!-- Tracking Link Container -->
+        <div class="tracking-link-container">
+            <h2>Generated Tracking Link</h2>
+            <p>Your tracking link: <a href="{{ tracking_link }}" target="_blank">{{ tracking_link }}</a></p>
+            <p>Share via WhatsApp: <a href="https://wa.me/?text={{ tracking_link }}" target="_blank">Send on WhatsApp</a></p>
+        </div>
 
         <!-- Vacant Crew Members -->
         <h2>Vacant Crew Members</h2>
@@ -32,8 +45,25 @@
             <ul>
                 {% for crew in vacant_crew_list %}
                 <li>
-                    {{ crew.crew.first_name }} ({{ crew.crew.crew_id }}) -
-                    <span class="location">Location: {{ crew.location.0 }}, {{ crew.location.1 }}</span>
+                    <a href="{% url 'crew:traffic_crew_dashboard' crew.crew.crew_id %}">
+                        {{ crew.crew.first_name }} ({{ crew.crew.crew_id }}) -
+                        <span class="location">Location: {{ crew.location.0 }}, {{ crew.location.1 }}</span>
+                    </a>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <!-- Active Crew Members -->
+        <h2>Active Crew Members</h2>
+        <div class="active-crew">
+            <ul>
+                {% for crew in active_crew_list %}
+                <li>
+                    <a href="{% url 'crew:traffic_crew_dashboard' crew.crew.crew_id %}">
+                        {{ crew.crew.first_name }} ({{ crew.crew.crew_id }}) -
+                        <span class="location">Location: {{ crew.location.0 }}, {{ crew.location.1 }}</span>
+                    </a>
                 </li>
                 {% endfor %}
             </ul>

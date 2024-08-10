@@ -24,6 +24,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
      path('', crew_login, name='login'),
     path("Work/", include("Work.urls")),
-    path("crew/", include("Crew.urls")),
+    path('crew/', include('Crew.urls', namespace='crew')),
     path("ambulance/", include("Ambulance.urls")),
+    path("tracker/", include("Tracker.urls"))
 ]

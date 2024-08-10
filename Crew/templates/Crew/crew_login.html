@@ -3,6 +3,7 @@
 
 <head>
     <title>Crew Login</title>
+    {% load static %}
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -11,7 +12,10 @@
             align-items: center;
             height: 100vh;
             margin: 0;
-            background-color: #f4f4f4;
+            background-image: url("{% static 'Crew/images/pexels-pavel-danilyuk-6754163.jpg' %}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
         }
 
         .container {
@@ -80,7 +84,7 @@
 <body>
     <div class="container">
         <h1>Crew Login</h1>
-        <form method="post" action="{% url 'crew_login' %}", id="login-form">
+        <form method="post" action="{% url 'crew:crew_login' %}", id="login-form">
             {% csrf_token %}
             <div class="form-group">
                 <label for="id_username">Username</label>
@@ -104,7 +108,7 @@
             </div>
             <div class="register-link">
                 <p>Don't have an account?</p>
-                <a href="{% url 'crew_selection' %}">Register here</a>
+                <a href="{% url 'crew:crew_selection' %}">Register here</a>
             </div>
         </form>
     </div>

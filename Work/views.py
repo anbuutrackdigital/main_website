@@ -21,7 +21,7 @@ def work_view(request):
     user = request.user
 
     if CallCrew.objects.filter(user=user).exists():
-        if request.method == 'POST':
+        if request.method == "POST":
             form = CallDetailsForm(request.POST)
 
             if form.is_valid():
@@ -30,40 +30,55 @@ def work_view(request):
                 call_details.save()
 
                 # Process assigned crew
-                selected_crew = form.cleaned_data['assigned_crew']
+                selected_crew = form.cleaned_data["assigned_crew"]
                 call_details.assigned_crew.set(selected_crew)
                 call_details.save()
 
-                return redirect('work_view')
+                # Update crew status to 'active'
+                for crew in selected_crew:
+                    TrafficCrewAvailable.objects.filter(traffic_crew=crew).update(
+                        status="active"
+                    )
+
+                return redirect("work_view")
         else:
             form = CallDetailsForm()
 
         # Prepare data for the template
-        vacant_crew = TrafficCrewAvailable.objects.filter(status='vacant')
+        vacant_crew = TrafficCrewAvailable.objects.filter(status="vacant")
         vacant_crew_list = []
         for crew in vacant_crew:
             location_coords = get_location_coordinates(crew.location)
-            vacant_crew_list.append({
-                'crew': crew.traffic_crew,
-                'location': location_coords
-            })
+            vacant_crew_list.append(
+                {"crew": crew.traffic_crew, "location": location_coords}
+            )
+
+        # Prepare data for the active crew section
+        active_crew = TrafficCrewAvailable.objects.filter(status="active")
+        active_crew_list = []
+        for crew in active_crew:
+            location_coords = get_location_coordinates(crew.location)
+            active_crew_list.append(
+                {"crew": crew.traffic_crew, "location": location_coords}
+            )
 
         # Fetch call history for the specific user
-        call_history = CallDetails.objects.filter(user=user).order_by('-created_at')
+        call_history = CallDetails.objects.filter(user=user).order_by("-created_at")
 
         context = {
-            'form': form,
-            'vacant_crew_list': vacant_crew_list,
-            'user': user,
-            'call_history': call_history
+            "form": form,
+            "vacant_crew_list": vacant_crew_list,
+            "user": user,
+            "call_history": call_history,
+            "active_crew_list": active_crew_list,
         }
-        return render(request, 'Work/home.html', context)
+        return render(request, "Work/home.html", context)
 
     elif TrafficCrew.objects.filter(user=user).exists():
         traffic_crew = TrafficCrew.objects.get(user=user)
-        return redirect('work_traffic_crew_dashboard', crew_id=traffic_crew.crew_id)
+        return redirect("work_traffic_crew_dashboard", crew_id=traffic_crew.crew_id)
 
-    return redirect('login')
+    return redirect("login")
 
 
 @login_required

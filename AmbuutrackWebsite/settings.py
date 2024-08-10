@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     "Crew.apps.CrewConfig",
     "Ambulance.apps.AmbulanceConfig",
     "Work.apps.WorkConfig",
+    "Tracker.apps.TrackerConfig"
 ]
 
 MIDDLEWARE = [
@@ -84,11 +85,8 @@ WSGI_APPLICATION = "AmbuutrackWebsite.wsgi.application"
 
 
 STATIC_URL = '/static/'
-
-# Optional: Specify additional directories if needed
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static")
-]
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases

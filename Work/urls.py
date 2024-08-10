@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from Tracker.views import index as TrackerIndex
 
 urlpatterns = [
     path("", views.work_view, name="work_view"),
@@ -14,5 +15,6 @@ urlpatterns = [
         "assign-crew/<int:call_id>/",
         views.assign_crew_to_call,
         name="assign_crew_to_call",
-    ),  # Add this line
+    ),
+    path("tracker", TrackerIndex, name='tracker')
 ]

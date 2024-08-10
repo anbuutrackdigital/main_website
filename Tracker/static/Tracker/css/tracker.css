@@ -1,0 +1,68 @@
+/* Reset some default styling */
+body, h1, h2, p {
+    margin: 0;
+    padding: 0;
+}
+
+/* Basic styling for the container */
+.container {
+    font-family: Arial, sans-serif;
+    color: #333;
+    padding: 20px;
+}
+
+/* Header styling */
+header {
+    background-color: #e4322b;
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+}
+
+header h1 {
+    font-size: 24px;
+}
+
+/* Map container styling */
+.map-container {
+    margin-bottom: 20px;
+}
+
+#map {
+    width: 100%;
+    height: 500px;
+    background-color: #ddd; /* Placeholder color for the map */
+    text-align: center;
+    line-height: 500px;
+}
+
+/* Details section styling */
+.details {
+    display: flex;
+    justify-content: space-between;
+}
+
+.ambulance-details, .crew-details {
+    width: 48%;
+}
+
+.ambulance-details h2, .crew-details h2 {
+    background-color: #e4322b;
+    color: #fff;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.crew-member {
+    border-bottom: 1px solid #ddd;
+    padding: 10px 0;
+}
+
+a {
+    color: #e4322b;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}

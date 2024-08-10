@@ -1,0 +1,100 @@
+/* static/css/styles.css */
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+h1,
+h2 {
+    color: #333;
+}
+
+p {
+    color: #666;
+}
+
+.container {
+    width: 80%;
+    margin: auto;
+    overflow: hidden;
+}
+
+form {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+form input[type="text"],
+form input[type="tel"],
+form input[type="email"],
+form textarea {
+    width: 100%;
+    padding: 8px;
+    margin: 8px 0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+form button {
+    background: #0056b3;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+form button:hover {
+    background: #004494;
+}
+
+.vacant-crew,
+.call-history {
+    background: #fff;
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.vacant-crew ul,
+.call-history ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.vacant-crew li,
+.call-history li {
+    margin-bottom: 10px;
+}
+
+.vacant-crew li {
+    display: flex;
+    justify-content: space-between;
+}
+
+.vacant-crew .location {
+    font-size: 0.9em;
+    color: #666;
+}
+
+table.call-history-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table.call-history-table th,
+table.call-history-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+table.call-history-table th {
+    background-color: #f2f2f2;
+}

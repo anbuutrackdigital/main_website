@@ -7,6 +7,7 @@
     <title>Traffic Crew Dashboard</title>
     <meta name="description" content="Traffic Crew Dashboard">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% load static %}
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -21,14 +22,35 @@
             margin-top: 20px;
         }
 
-        .dashboard-container {
+        .map-container {
             width: 100%;
-            max-width: 800px;
+            max-width: 1200px;
             margin: 20px auto;
             padding: 20px;
             background-color: #fff;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            height: 400px;
+            /* Adjust height as needed */
+            position: relative;
+        }
+
+        .dashboard-container {
+            display: flex;
+            width: 100%;
+            max-width: 1200px;
+            /* Increased width to accommodate image */
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .info-container {
+            flex: 2;
+            margin-right: 20px;
+            /* Space between info and image */
         }
 
         p {
@@ -75,37 +97,86 @@
         .button:active {
             background-color: #00408d;
         }
+
+        .image-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            max-height: 400px;
+            /* Adjust height as needed */
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #fff;
+        }
+
+        /* Map container styling */
+        .map-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: 8px;
+        }
     </style>
 </head>
 
 <body>
     <h1>Welcome, {{ traffic_crew.first_name }} {{ traffic_crew.last_name }}</h1>
-    <div class="dashboard-container">
-        <p class="info">
-            <span class="info-label">Crew ID:</span>
-            <span class="info-value">{{ traffic_crew.crew_id }}</span>
-        </p>
-        <p class="info">
-            <span class="info-label">Username:</span>
-            <span class="info-value">{{ traffic_crew.user }}</span>
-        </p>
-        <p class="info">
-            <span class="info-label">Phone Number:</span>
-            <span class="info-value">{{ traffic_crew.phone_number }}</span>
-        </p>
-        <p class="info">
-            <span class="info-label">Bike Number:</span>
-            <span class="info-value">{{ traffic_crew.bike_number }}</span>
-        </p>
-        <p class="info">
-            <span class="info-label">Gender:</span>
-            <span class="info-value">{{ traffic_crew.gender }}</span>
-        </p>
-        <div class="button-container">
-            <a href="{% url 'crew_logout' %}" class="button">Logout</a>
-        </div>
+
+    <div class="map-container">
+        <!-- Replace with your map iframe or other map integration -->
+        <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3153.2143250385927!2d-122.419418!3d37.774929!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8085807f2c1c8b5b%3A0x2c53c2e3f238d98!2sSan%20Francisco%2C%20CA!5e0!3m2!1sen!2sus!4v1595489729468!5m2!1sen!2sus"
+            allowfullscreen="" loading="lazy"></iframe>
     </div>
 
+    <div class="dashboard-container">
+        <div class="info-container">
+            <p class="info">
+                <span class="info-label">Crew ID:</span>
+                <span class="info-value">{{ traffic_crew.crew_id }}</span>
+            </p>
+            <p class="info">
+                <span class="info-label">Username:</span>
+                <span class="info-value">{{ traffic_crew.user }}</span>
+            </p>
+            <p class="info">
+                <span class="info-label">Phone Number:</span>
+                <span class="info-value">{{ traffic_crew.phone_number }}</span>
+            </p>
+            <p class="info">
+                <span class="info-label">Bike Number:</span>
+                <span class="info-value">{{ traffic_crew.bike_number }}</span>
+            </p>
+            <p class="info">
+                <span class="info-label">Gender:</span>
+                <span class="info-value">{{ traffic_crew.gender }}</span>
+            </p>
+            <p class="info">
+                <span class="info-label">Status:</span>
+                <span class="info-value">{{ crew_available.status }}</span>
+            </p>
+
+            <form method="POST" action="">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <div class="button-container">
+                    <button type="submit" class="button">Update Status</button>
+                </div>
+            </form>
+
+            <div class="button-container">
+                <a href="{% url 'crew:crew_logout' %}" class="button">Logout</a>
+            </div>
+        </div>
+        <div class="image-container">
+            <img src="{% static 'Crew/images/sample_profile.jpg' %}" alt="Crew Profile Image">
+        </div>
+    </div>
 </body>
 
 </html>

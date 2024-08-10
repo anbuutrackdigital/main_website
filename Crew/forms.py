@@ -2,7 +2,7 @@ from django import forms
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
 
-from .models import TrafficCrew, CallCrew
+from .models import TrafficCrew, CallCrew, TrafficCrewAvailable
 
 
 class CrewLoginForm(forms.Form):
@@ -56,3 +56,12 @@ class TrafficCrewRegistrationForm(BaseRegistrationForm):
     class Meta:
         model = TrafficCrew
         fields = ["first_name", "last_name", "phone_number", "bike_number", "gender"]
+        
+        
+class TrafficCrewStatusForm(forms.ModelForm):
+    class Meta:
+        model = TrafficCrewAvailable
+        fields = ['status']
+        widgets = {
+            'status': forms.Select(choices=TrafficCrewAvailable.STATUS_CHOICES),
+        }

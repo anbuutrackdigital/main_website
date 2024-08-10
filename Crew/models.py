@@ -35,10 +35,15 @@ class TrafficCrew(models.Model):
 
 
 class TrafficCrewAvailable(models.Model):
+    STATUS_CHOICES = [
+        ('vacant', 'Vacant'),
+        ('active', 'Active'),
+    ]
+
     traffic_crew = models.OneToOneField(
         TrafficCrew, on_delete=models.CASCADE, primary_key=True
     )
-    status = models.CharField(max_length=20, default=True)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='vacant')
     location = geomodels.PointField()
 
     def __str__(self) -> str:
