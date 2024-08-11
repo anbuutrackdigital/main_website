@@ -64,7 +64,7 @@
 <body>
     <div class="container">
         <h1>Select Crew Type to Register</h1>
-        <form action="{% url 'register_crew' %}" method="get">
+        <form action="{% url 'crew:register_crew' %}" method="get">
             <button type="submit" name="crew_type" value="call">Register Call Crew Member</button>
             <button type="submit" name="crew_type" value="traffic">Register Traffic Crew Member</button>
         </form>

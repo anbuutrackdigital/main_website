@@ -1,8 +1,12 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Register Traffic Crew</title>
+    <meta name="description" content="Register Traffic Crew">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -16,6 +20,13 @@
 
         .container {
             text-align: center;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+            box-sizing: border-box;
         }
 
         h1 {
@@ -24,16 +35,8 @@
         }
 
         form {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             width: 100%;
-            max-width: 500px;
             box-sizing: border-box;
-            /* Ensures padding and border are included in the element's total width and height */
-            margin: 0 auto;
-            /* Centers the form within the container */
         }
 
         button {
@@ -75,7 +78,6 @@
             border: 1px solid #ddd;
             border-radius: 5px;
             box-sizing: border-box;
-            /* Ensures padding and border are included in the element's total width */
         }
 
         .form-group input:focus,
@@ -89,13 +91,12 @@
 <body>
     <div class="container">
         <h1>Register Traffic Crew</h1>
-        <form method="post" action="{% url 'register_crew' %}?crew_type=traffic">
+        <form method="post" action="{% url 'crew:register_crew' %}?crew_type=traffic">
             {% csrf_token %}
             {{ form.as_p }}
             <button type="submit">Register</button>
         </form>
     </div>
-
 </body>
 
 </html>

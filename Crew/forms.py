@@ -62,6 +62,6 @@ class TrafficCrewStatusForm(forms.ModelForm):
     class Meta:
         model = TrafficCrewAvailable
         fields = ['status']
-        widgets = {
-            'status': forms.Select(choices=TrafficCrewAvailable.STATUS_CHOICES),
-        }
+    
+    # Add a hidden field for traffic_crew_id
+    traffic_crew_id = forms.UUIDField(widget=forms.HiddenInput(), required=False)
